@@ -4,49 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recomendaciones</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='Recomendacion.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='recomendaciones.css') }}">
 </head>
 <body>
-    <div class="container py-5">
-        <h1 class="text-center text-primary mb-4">Explora Destinos Inolvidables</h1>
-
-        {% if recomendaciones %}
+    <div class="container">
+        <h1>Recomendaciones de Vuelos</h1>
         <div class="row">
             {% for recomendacion in recomendaciones %}
-            <div class="col-md-4">
-                <div class="card">
-                    <!-- Imagen -->
-                    <img src="{{ url_for('static', filename='uploads/' + recomendacion['imagen_url']) }}" 
-                         class="card-img-top" 
-                         alt="Imagen de la recomendación" 
-                         onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/default.jpg') }}';">
-                    
-                    <!-- Contenido -->
-                    <div class="card-body">
-                        <h5 class="card-title">{{ recomendacion['titulo'] }}</h5>
-                        <p class="card-text">{{ recomendacion['descripcion'] }}</p>
-                        
-                    </div>
-                </div>
+            <div class="card">
+                <!-- Ruta de la imagen desde uploads/images -->
+                <img src="{{ url_for('static', filename=recomendacion.imagen_url) }}" 
+                     alt="{{ recomendacion.titulo }}" 
+                     onerror="this.onerror=null; this.src='{{ url_for('static', filename='images/default.jpg') }}';">
+                <h3>{{ recomendacion.titulo }}</h3>
+                <p>{{ recomendacion.descripcion }}</p>
+                <p><strong>Destino:</strong> {{ recomendacion.llegada }}</p>
+                <p><strong>Precio:</strong> ${{ recomendacion.precio }}</p>
+                <a href="{{ url_for('app_routes.detalle_recomendacion', recomendacion_id=recomendacion.recomendacion_id) }}" class="btn">Ver Detalle</a>
             </div>
             {% endfor %}
         </div>
-        {% else %}
-        <div class="alert text-center">
-            <h3 class="text-warning">¡Lo sentimos!</h3>
-            <p>No hay recomendaciones disponibles en este momento. ¡Vuelve pronto para más destinos!</p>
+        <div class="actions">
+            <a href="{{ url_for('app_routes.cliente_dashboard') }}" class="btn">Regresar al Panel Principal</a>
+            <a href="{{ url_for('app_routes.mis_reservas_recomendaciones') }}" class="btn">Mis Reservas y Recomendaciones</a>
         </div>
-        {% endif %}
-
-        <div class="promotion-section text-center mt-5">
-            <h2 class="text-success">Ofertas Exclusivas para Viajar Más</h2>
-            <p>Explora los mejores destinos al mejor precio. ¡Reserva ahora y ahorra en grande!</p>
-            <a href="{{ url_for('app_routes.mostrar_promociones_cliente') }}" class="btn btn-info">Ver Promociones</a>
-        </div>
-        
-        <div class="text-center mt-4">
-            <a href="{{ url_for('app_routes.bienvenida_cliente') }}" class="btn btn-secondary">Regresar</a>
-        </div>
-        </body>
-        </html>
-        
+    </div>
+</body>
+</html>
